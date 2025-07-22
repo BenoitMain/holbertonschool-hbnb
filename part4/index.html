@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Open+Sans&display=swap" rel="stylesheet">
     <title>List of Places</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,15 +18,22 @@
     </header>
     <main>
         <section id="filter">
+            <h2>Filter Places</h2>
             <label for="price-filter">Max Price:</label>
             <select id="price-filter">
-                <!-- Options will be populated dynamically -->
+            <option value="50">50€</option>
+                <option value="100">100€</option>
+                <option value="200">200€</option>
+                <option value="500">500€</option>
+                <option value="1000">1000€</option>
             </select>
-        </section>
+            <button id="apply-filter">Apply Filter</button>
+            </section>
         <section id="places-list">
             <div class="place-card">
                 <h3>Tokyo</h3>
                 <p>250€ per night</p>
+
                 <a href="place.html" class="details-button">View Details</a>
             </div>
             <div class="place-card">
