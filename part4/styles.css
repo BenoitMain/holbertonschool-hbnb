@@ -31,7 +31,8 @@ main {
     padding: 2rem;
 }
 
-.place-card, .review-card {
+.place-card,
+.review-card {
     margin: 20px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -39,7 +40,8 @@ main {
 }
 
 .details-button {
-    background-color: #a3c9a8; /* vert doux naturel */
+    background-color: #a3c9a8;
+    /* vert doux naturel */
     color: #fff;
     padding: 10px 20px;
     border-radius: 5px;
@@ -48,6 +50,7 @@ main {
     margin-top: 10px;
     transition: background-color 0.3s ease;
 }
+
 .details-button:hover {
     background-color: #6fbf73;
 }
@@ -57,6 +60,18 @@ main {
 
 .place-info {}
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-family: 'Lora', serif;
+}
+
+/* Style pour le bouton logout */
+.login-button.logout {
+    background-color: #dc3545;
+    cursor: pointer;
+}
+
+.login-button.logout:hover {
+    background-color: #c82333;
 }
