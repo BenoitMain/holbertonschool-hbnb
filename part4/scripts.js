@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Mettre à jour l'UI selon l'état de connexion au chargement
         updateUIBasedOnAuth();
     }
+    if (document.getElementById('place-details')) {
+        initializePlaceDetailsPage();
+    }
 });
 async function loginUser(email, password) {
     const errorDiv = document.getElementById('error-message');
@@ -254,9 +257,17 @@ async function fetchPlaces() {
         if (response.ok) {
             const places = await response.json();
             console.log('Places fetched:', places);
-            displayPlaces(places);
+
+            // AJOUTEZ CETTE VÉRIFICATION 👇
+            if (places && places.length > 0) {
+                displayPlaces(places);
+            } else {
+                console.log('API returned empty array, using mock data');
+                displayMockPlaces();
+            }
         } else {
             console.error('Failed to fetch places:', response.statusText);
+            displayMockPlaces();
         }
     } catch (error) {
         console.error('Error fetching places:', error);
@@ -269,69 +280,66 @@ async function fetchPlaces() {
             if (response.ok) {
                 const places = await response.json();
                 console.log('✅ Places fetched without auth:', places);
-                displayPlaces(places);
+
+                // AJOUTEZ CETTE VÉRIFICATION AUSSI 👇
+                if (places && places.length > 0) {
+                    displayPlaces(places);
+                } else {
+                    console.log('API returned empty array, using mock data');
+                    displayMockPlaces();
+                }
             } else {
                 console.error('Failed to fetch places without auth:', response.statusText);
-
-                // AJOUT : Données mockées si l'API ne fonctionne pas
-                console.log('📊 Using mock data as fallback');
-                const mockPlaces = [
-                    {
-                        id: "1",
-                        title: "Budget Room Bangkok",
-                        description: "Affordable room perfect for backpackers",
-                        price_per_night: 25,
-                        city: "Bangkok"
-                    },
-                    {
-                        id: "2",
-                        title: "Paris Apartment",
-                        description: "Beautiful apartment in the heart of Paris",
-                        price_per_night: 85,
-                        city: "Paris"
-                    },
-                    {
-                        id: "3",
-                        title: "Tokyo House",
-                        description: "Traditional Japanese house with modern amenities",
-                        price_per_night: 120,
-                        city: "Tokyo"
-                    },
-                    {
-                        id: "4",
-                        title: "NYC Luxury Loft",
-                        description: "Modern loft in Manhattan with stunning views",
-                        price_per_night: 200,
-                        city: "New York"
-                    }
-                ];
-                displayPlaces(mockPlaces);
+                displayMockPlaces();
             }
         } catch (fallbackError) {
             console.error('Fallback fetch also failed:', fallbackError);
-
-            // AJOUT : Dernière option - données mockées
-            console.log('🎯 Using mock data as last resort');
-            const mockPlaces = [
-                {
-                    id: "1",
-                    title: "Budget Room Bangkok",
-                    description: "Affordable room perfect for backpackers",
-                    price_per_night: 25,
-                    city: "Bangkok"
-                },
-                {
-                    id: "2",
-                    title: "Paris Apartment",
-                    description: "Beautiful apartment in the heart of Paris",
-                    price_per_night: 85,
-                    city: "Paris"
-                }
-            ];
-            displayPlaces(mockPlaces);
+            displayMockPlaces();
         }
     }
 }
+
+// AJOUTEZ CETTE NOUVELLE FONCTION 👇
+function displayMockPlaces() {
+    const mockPlaces = [
+        {
+            id: "1",
+            title: "Budget Room Bangkok",
+            description: "Affordable room perfect for backpackers in the heart of Bangkok.",
+            price_per_night: 25,
+            city: "Bangkok",
+            host_name: "Somchai Thai"
+        },
+        {
+            id: "2",
+            title: "Paris Luxury Apartment",
+            description: "Beautiful apartment near la Tour Eiffel avec une vue imprenable sur la ville.",
+            price_per_night: 85,
+            city: "Paris",
+            host_name: "Marie Dubois"
+        },
+        {
+            id: "3",
+            title: "Tokyo Modern House",
+            description: "Traditional Japanese house with modern amenities in Shibuya.",
+            price_per_night: 120,
+            city: "Tokyo",
+            host_name: "Takeshi Yamamoto"
+        },
+        {
+            id: "4",
+            title: "NYC Luxury Loft",
+            description: "Modern loft in Manhattan with stunning views of Central Park.",
+            price_per_night: 200,
+            city: "New York",
+            host_name: "Jennifer Smith"
+        }
+    ];
+
+    console.log('📊 Using mock data as fallback');
+    displayPlaces(mockPlaces);
+}
+
 function setupPriceFilter() {
     const priceFilter = document.getElementById('price-filter');
 
@@ -390,5 +398,324 @@ function filterPlacesByPrice(maxPrice) {
 function viewPlaceDetails(placeId) {
     console.log(`🔍 Viewing details for place: ${placeId}`);
     window.location.href = `place.html?id=${placeId}`;
+}
+
+// ===== TASK 3: PLACE DETAILS FUNCTIONS =====
+
+/**
+ * Extract place ID from URL parameters
+ * @returns {string|null} Place ID or null if not found
+ */
+function getPlaceIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('id');
+}
+
+/**
+ * Fetch detailed information for a specific place
+ * @param {string} placeId - The ID of the place to fetch
+ */
+async function fetchPlaceDetails(placeId) {
+    try {
+        console.log(`🔍 Fetching details for place: ${placeId}`);
+
+        // Try with authentication first
+        let response;
+        try {
+            response = await authenticatedFetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`);
+        } catch (authError) {
+            // If authentication fails, try without token
+            console.log('Authentication failed, trying without token...');
+            response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`);
+        }
+
+        if (response.ok) {
+            const place = await response.json();
+            console.log('✅ Place details fetched:', place);
+            displayPlaceDetails(place);
+
+            // Also fetch reviews for this place
+            fetchPlaceReviews(placeId);
+        } else {
+            console.error('Failed to fetch place details:', response.statusText);
+            // Fallback to mock data
+            displayMockPlaceDetails(placeId);
+        }
+    } catch (error) {
+        console.error('Error fetching place details:', error);
+        // Fallback to mock data
+        displayMockPlaceDetails(placeId);
+    }
+}
+
+/**
+ * Display place details on the page
+ * @param {Object} place - Place object with details
+ */
+function displayPlaceDetails(place) {
+    const placeDetails = document.getElementById('place-details');
+
+    if (!placeDetails) {
+        console.error('Element #place-details not found');
+        return;
+    }
+
+    // Get price from various possible field names
+    const price = place.price_per_night || place.price || place.cost_per_night || 0;
+
+    placeDetails.innerHTML = `
+        <div class="place-info">
+            <h1>${place.title || place.name || 'Unnamed Place'}</h1>
+            <p class="description">${place.description || 'No description available'}</p>
+            <div class="place-meta">
+                <p class="price"><strong>Price:</strong> $${price}/night</p>
+                <p class="location"><strong>Location:</strong> ${place.city || place.location || 'Unknown'}</p>
+                <p class="host"><strong>Host:</strong> ${place.host_name || place.owner_name || 'Unknown Host'}</p>
+            </div>
+
+            <div class="amenities">
+                <h3>Amenities:</h3>
+                <ul>
+                    ${place.amenities && place.amenities.length > 0
+            ? place.amenities.map(amenity => `<li>${amenity}</li>`).join('')
+            : '<li>No amenities listed</li>'
+        }
+                </ul>
+            </div>
+        </div>
+
+        <div class="reviews-section">
+            <h3>Reviews:</h3>
+            <div id="reviews-list">
+                <p>Loading reviews...</p>
+            </div>
+        </div>
+
+        <!-- Add review form (only shown if logged in) -->
+        <div id="add-review" style="display: none;">
+            <h3>Add Your Review:</h3>
+            <form id="review-form">
+                <div class="form-group">
+                    <label for="review-text">Your Review:</label>
+                    <textarea id="review-text" rows="4" required placeholder="Share your experience..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="review-rating">Rating:</label>
+                    <select id="review-rating" required>
+                        <option value="">Select rating</option>
+                        <option value="1">1 - Poor</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="5">5 - Excellent</option>
+                    </select>
+                </div>
+                <button type="submit">Submit Review</button>
+            </form>
+        </div>
+    `;
+
+    // Set up review form submission
+    setupReviewForm(place.id);
+
+    console.log(`✅ Displayed details for place: ${place.title || place.name}`);
+}
+
+/**
+ * Fetch reviews for a specific place
+ * @param {string} placeId - The ID of the place
+ */
+async function fetchPlaceReviews(placeId) {
+    try {
+        console.log(`📝 Fetching reviews for place: ${placeId}`);
+
+        // Try to fetch reviews from API
+        let response;
+        try {
+            response = await authenticatedFetch(`http://127.0.0.1:5000/api/v1/places/${placeId}/reviews`);
+        } catch (authError) {
+            response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}/reviews`);
+        }
+
+        if (response.ok) {
+            const reviews = await response.json();
+            console.log('✅ Reviews fetched:', reviews);
+            displayReviews(reviews);
+        } else {
+            console.log('No reviews endpoint or empty reviews');
+            displayMockReviews(placeId);
+        }
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+        displayMockReviews(placeId);
+    }
+}
+
+/**
+ * Display reviews on the page
+ * @param {Array} reviews - Array of review objects
+ */
+function displayReviews(reviews) {
+    const reviewsList = document.getElementById('reviews-list');
+
+    if (!reviewsList) {
+        console.error('Element #reviews-list not found');
+        return;
+    }
+
+    if (!reviews || reviews.length === 0) {
+        reviewsList.innerHTML = '<p>No reviews yet. Be the first to review!</p>';
+        return;
+    }
+
+    reviewsList.innerHTML = reviews.map(review => `
+        <div class="review-card">
+            <div class="review-header">
+                <strong>${review.user_name || review.author || 'Anonymous'}</strong>
+                <span class="rating">★ ${review.rating}/5</span>
+            </div>
+            <p class="review-text">"${review.text || review.comment || review.content}"</p>
+            <p class="review-date">${review.created_at ? new Date(review.created_at).toLocaleDateString() : ''}</p>
+        </div>
+    `).join('');
+
+    console.log(`✅ Displayed ${reviews.length} reviews`);
+}
+
+/**
+ * Set up the review form submission
+ * @param {string} placeId - The ID of the place
+ */
+function setupReviewForm(placeId) {
+    const reviewForm = document.getElementById('review-form');
+
+    if (!reviewForm) return;
+
+    reviewForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const reviewText = document.getElementById('review-text').value;
+        const rating = document.getElementById('review-rating').value;
+
+        if (!reviewText || !rating) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        try {
+            await submitReview(placeId, reviewText, parseInt(rating));
+
+            // Clear form
+            reviewForm.reset();
+
+            // Refresh reviews
+            fetchPlaceReviews(placeId);
+
+            alert('Review submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            alert('Failed to submit review. Please try again.');
+        }
+    });
+}
+
+/**
+ * Initialize place details page
+ */
+function initializePlaceDetailsPage() {
+    const placeId = getPlaceIdFromURL();
+
+    if (!placeId) {
+        document.getElementById('place-details').innerHTML = '<p>No place ID provided</p>';
+        return;
+    }
+
+    console.log(`🏠 Initializing place details page for ID: ${placeId}`);
+
+    // Update UI based on authentication status
+    updateUIBasedOnAuth();
+
+    // Fetch and display place details
+    fetchPlaceDetails(placeId);
+}
+
+// ===== MOCK DATA FOR DEVELOPMENT =====
+
+const mockPlaces = {
+    "1": {
+        id: "1",
+        title: "Budget Room Bangkok",
+        description: "Affordable room perfect for backpackers in the heart of Bangkok. Close to temples, markets, and nightlife.",
+        price_per_night: 25,
+        city: "Bangkok",
+        host_name: "Somchai Thai",
+        amenities: ["WiFi", "Air Conditioning", "Shared Kitchen", "24/7 Reception"]
+    },
+    "2": {
+        id: "2",
+        title: "Paris Luxury Apartment",
+        description: "Beautiful apartment near the Eiffel Tower with stunning views of the city.",
+        price_per_night: 85,
+        city: "Paris",
+        host_name: "Marie Dubois",
+        amenities: ["WiFi", "Full Kitchen", "Balcony", "City View"]
+    },
+    "3": {
+        id: "3",
+        title: "Tokyo Modern House",
+        description: "Traditional Japanese house with modern amenities in the heart of Shibuya.",
+        price_per_night: 120,
+        city: "Tokyo",
+        host_name: "Takeshi Yamamoto",
+        amenities: ["WiFi", "Traditional Bath", "Garden", "Metro Access"]
+    },
+    "4": {
+        id: "4",
+        title: "NYC Luxury Loft",
+        description: "Modern loft in Manhattan with stunning views of Central Park.",
+        price_per_night: 200,
+        city: "New York",
+        host_name: "Jennifer Smith",
+        amenities: ["WiFi", "Gym", "Rooftop Access", "Park View"]
+    }
+};
+
+const mockReviews = {
+    "1": [
+        { text: "Great location and very clean!", rating: 5, user_name: "John D.", created_at: "2024-01-15" },
+        { text: "Perfect for budget travelers", rating: 4, user_name: "Sarah M.", created_at: "2024-01-10" }
+    ],
+    "2": [
+        { text: "Amazing view and great location!", rating: 5, user_name: "Mike R.", created_at: "2024-01-20" }
+    ],
+    "3": [
+        { text: "Authentic Japanese experience", rating: 4, user_name: "David K.", created_at: "2024-01-12" }
+    ],
+    "4": [
+        { text: "Incredible place, worth every penny!", rating: 5, user_name: "Lisa W.", created_at: "2024-01-22" }
+    ]
+};
+
+/**
+ * Fallback function to display mock place details
+ */
+function displayMockPlaceDetails(placeId) {
+    const place = mockPlaces[placeId];
+    if (place) {
+        console.log('📊 Using mock place details');
+        displayPlaceDetails(place);
+        displayMockReviews(placeId);
+    } else {
+        document.getElementById('place-details').innerHTML = '<p>Place not found</p>';
+    }
+}
+
+/**
+ * Display mock reviews for testing
+ */
+function displayMockReviews(placeId) {
+    const reviews = mockReviews[placeId] || [];
+    console.log('📊 Using mock reviews');
+    displayReviews(reviews);
 }
 
