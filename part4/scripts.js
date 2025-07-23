@@ -14,12 +14,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Code pour la page d'index
-    checkAuthentication();
-    setupPriceFilter();
+    // Gestion du bouton logout
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            logout();
+        });
+    }
 
-    // Mettre à jour l'UI selon l'état de connexion au chargement
-    updateUIBasedOnAuth();
+    // Code pour la page d'index
+    if (document.getElementById('places-list')) {
+        checkAuthentication();
+        setupPriceFilter();
+
+        // Mettre à jour l'UI selon l'état de connexion au chargement
+        updateUIBasedOnAuth();
+    }
 });
 async function loginUser(email, password) {
     const errorDiv = document.getElementById('error-message');
@@ -119,14 +130,13 @@ async function submitReview(placeId, reviewText, rating) {
 
 // Fonction de logout
 function logout() {
-    // Supprimer le cookie
+    // Supprimer le token des cookies
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 
-    // Mettre à jour l'interface
-    updateUIBasedOnAuth();
+    console.log('🚪 Utilisateur déconnecté');
 
-    // Rediriger vers la page d'accueil
-    window.location.href = 'index.html';
+    // Recharger la page pour mettre à jour l'interface
+    window.location.reload();
 }
 
 // Fonction pour mettre à jour l'interface selon l'état de connexion
@@ -165,20 +175,28 @@ function updateUIBasedOnAuth() {
     }
 }
 
+// Mise à jour de la fonction checkAuthentication
 function checkAuthentication() {
     const token = getCookie('token');
     const loginLink = document.getElementById('login-link');
+    const logoutLink = document.getElementById('logout-link');
 
     if (!token) {
-        // Utilisateur non connecté : montrer le lien de login
+        // Utilisateur non connecté : montrer login, cacher logout
         if (loginLink) {
             loginLink.style.display = 'block';
         }
+        if (logoutLink) {
+            logoutLink.style.display = 'none';
+        }
         console.log('👤 Utilisateur non connecté - Affichage du lien de connexion');
     } else {
-        // Utilisateur connecté : cacher le lien de login
+        // Utilisateur connecté : cacher login, montrer logout
         if (loginLink) {
             loginLink.style.display = 'none';
+        }
+        if (logoutLink) {
+            logoutLink.style.display = 'block';
         }
         console.log('✅ Utilisateur connecté avec token:', token.substring(0, 20) + '...');
     }
