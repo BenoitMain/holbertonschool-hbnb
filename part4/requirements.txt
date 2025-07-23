@@ -20,7 +20,7 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 jsonschema==4.24.0
 jsonschema-specifications==2025.4.1
-Mako==1.3.10.dev0
+Mako==1.3.10
 Markdown==3.5.2
 MarkupSafe==3.0.2
 meson==1.5.2
@@ -31,7 +31,7 @@ PyGObject==3.50.1
 PyJWT==2.10.1
 pytz==2025.2
 referencing==0.36.2
-requests @ file:///home/benoitmain/Documents/github/requests
+requests==2.32.3
 rpds-py==0.25.1
 setuptools==80.9.0
 six==1.17.0
