@@ -208,7 +208,7 @@ function displayPlaces(places) {
     const placesList = document.getElementById('places-list');
 
     if (!placesList) {
-        console.error('Element places-list not found');
+        console.error('Element #places-list not found');
         return;
     }
 
@@ -229,12 +229,13 @@ function displayPlaces(places) {
         // IMPORTANT : ajouter l'attribut data-price pour le filtrage
         placeDiv.setAttribute('data-price', place.price_per_night || place.price || 0);
 
-        // Définir le contenu HTML
+        // Définir le contenu HTML avec le bouton View Details
         placeDiv.innerHTML = `
             <h3>${place.title || place.name || 'Unnamed Place'}</h3>
             <p>${place.description || 'No description available'}</p>
             <p>Location: ${place.city || place.location || 'Unknown'}</p>
             <p>Price: $${place.price_per_night || place.price || 0}/night</p>
+            <button class="details-button" onclick="viewPlaceDetails('${place.id || 'mock-' + Math.random()}')">View Details</button>
         `;
 
         // Ajouter à la liste
@@ -383,5 +384,11 @@ function filterPlacesByPrice(maxPrice) {
     });
 
     console.log(`Showing ${visibleCount} places with max price: ${maxPrice}`);
+}
+
+// Fonction pour naviguer vers les détails d'une place
+function viewPlaceDetails(placeId) {
+    console.log(`🔍 Viewing details for place: ${placeId}`);
+    window.location.href = `place.html?id=${placeId}`;
 }
 
