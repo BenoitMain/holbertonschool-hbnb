@@ -45,11 +45,22 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
 
-                // Récupérer les valeurs du formulaire
-                const reviewText = document.getElementById('review').value;
-                const rating = document.getElementById('rating').value;
+                const reviewElement = document.getElementById('review');
+                const ratingElement = document.getElementById('rating');
 
-                // Appeler submitReview
+                if (!reviewElement || !ratingElement) {
+                    alert('Form elements not found');
+                    return;
+                }
+
+                const reviewText = reviewElement.value;
+                const rating = ratingElement.value;
+
+                if (!reviewText.trim() || !rating) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+
                 try {
                     await submitReview(placeId, reviewText, rating);
                     alert('Review submitted successfully!');
@@ -626,6 +637,35 @@ function initializePlaceDetailsPage() {
     fetchPlaceDetails(placeId);
 }
 
-async function name(params) {
+// Fonction pour afficher des avis factices quand l'API ne fonctionne pas
+function displayMockReviews() {
+    const reviewsList = document.getElementById('reviews-list');
+    if (!reviewsList) return;
 
+    const mockReviews = [
+        {
+            id: 'mock-1',
+            text: 'Great place to stay! Very clean and comfortable.',
+            rating: 5,
+            user_name: 'John Doe'
+        },
+        {
+            id: 'mock-2',
+            text: 'Nice location but a bit noisy at night.',
+            rating: 3,
+            user_name: 'Jane Smith'
+        }
+    ];
+
+    reviewsList.innerHTML = mockReviews.map(review => `
+        <div class="review-card">
+            <div class="review-header">
+                <strong>${review.user_name}</strong>
+                <span class="rating">${'⭐'.repeat(review.rating)}</span>
+            </div>
+            <p class="review-text">${review.text}</p>
+        </div>
+    `).join('');
+
+    console.log('📝 Displayed mock reviews');
 }
