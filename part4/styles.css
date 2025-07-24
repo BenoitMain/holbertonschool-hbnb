@@ -11,12 +11,12 @@
 }
 
 body {
-    background-color: #f4fdf2;
-    color: #333;
+    background-color: #b209c9;
+    color: #f1db0f;
 }
 
 header {
-    background-color: #4e944f;
+    background-color: #853e05;
     color: #fff;
     padding: 1rem;
 }
@@ -41,7 +41,6 @@ main {
 
 .details-button {
     background-color: #a3c9a8;
-    /* vert doux naturel */
     color: #fff;
     padding: 10px 20px;
     border-radius: 5px;
