@@ -57,7 +57,10 @@ main {
 
 .place-details {}
 
-.place-info {}
+.place-info h1 {
+    font-size: 2rem;
+    margin: 1rem 0;
+}
 
 h1,
 h2,
