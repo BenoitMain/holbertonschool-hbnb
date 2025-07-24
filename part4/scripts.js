@@ -34,6 +34,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('place-details')) {
         initializePlaceDetailsPage();
     }
+    if (document.getElementById('review-form')) {
+        checkAuthentication();
+        if (!isLoggedIn()) {
+            window.location.href = 'index.html';
+        } else {
+            const placeId = getPlaceIdFromURL();
+            const reviewForm = document.getElementById('review-form');
+
+            reviewForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                // Récupérer les valeurs du formulaire
+                const reviewText = document.getElementById('review').value;
+                const rating = document.getElementById('rating').value;
+
+                // Appeler submitReview
+                try {
+                    await submitReview(placeId, reviewText, rating);
+                    alert('Review submitted successfully!');
+                    reviewForm.reset();
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    alert('Failed to submit review: ' + error.message);
+                }
+            });
+        }
+
+    }
 });
 async function loginUser(email, password) {
     const errorDiv = document.getElementById('error-message');
@@ -598,3 +626,6 @@ function initializePlaceDetailsPage() {
     fetchPlaceDetails(placeId);
 }
 
+async function name(params) {
+
+}
