@@ -72,6 +72,7 @@ class ReviewList(Resource):
                 'text': new_review.text,
                 'rating': new_review.rating,
                 'user_id': new_review.user.id,
+                # retrouvé la valeur de l'id qui met la review
                 'place_id': new_review.place.id,
                 'created_at': new_review.created_at.isoformat(),
                 'updated_at': new_review.updated_at.isoformat()

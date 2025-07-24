@@ -609,7 +609,7 @@ function displayReviews(reviews) {
         return `
             <div class="review-card">
                 <div class="review-header">
-                    <strong>User ${review.user_id ? review.user_id.substring(0, 8) : 'Unknown'}</strong>
+                    <strong>User ${review.first_name }</strong>
                     <span class="rating">${review.rating ? '⭐'.repeat(review.rating) : '⭐⭐⭐'}</span>
                 </div>
                 <p class="review-text">${review.text || 'No text provided'}</p>
