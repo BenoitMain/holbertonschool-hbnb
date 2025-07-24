@@ -363,7 +363,7 @@ function viewPlaceDetails(placeId) {
 
 /**
  * Extract place ID from URL parameters
- * @returns {string|null} Place ID or null if not found
+ * Place ID or null if not found
  */
 function getPlaceIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
