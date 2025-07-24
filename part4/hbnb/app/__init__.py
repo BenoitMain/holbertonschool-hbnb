@@ -28,7 +28,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     app.config.from_object(config_class)
 
     # Configure JWT token expiration to 1 hour (instead of default 15 minutes)
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=6)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days==1)
 
     # Enable Cross-Origin Resource Sharing (CORS) for API endpoints
     # This allows frontend running on different ports to access the API
