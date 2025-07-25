@@ -517,7 +517,8 @@ async function fetchPlaceReviews(placeId) {
     try {
         console.log(`📝 Fetching reviews for place: ${placeId}`);
 
-        const reviewsUrl = `http://127.0.0.1:5000/api/v1/reviews/places/${placeId}/reviews`;
+        // URL corrigée avec slash final
+        const reviewsUrl = `http://127.0.0.1:5000/api/v1/reviews/`;
 
         let response;
         try {
@@ -527,9 +528,13 @@ async function fetchPlaceReviews(placeId) {
         }
 
         if (response.ok) {
-            const reviews = await response.json();
-            console.log('✅ Reviews fetched from API:', reviews);
-            displayReviews(reviews);
+            const allReviews = await response.json();
+
+            // Filtrer les reviews pour cette place spécifique
+            const placeReviews = allReviews.filter(review => review.place_id === placeId);
+
+            console.log(`✅ Reviews fetched from API for place ${placeId}:`, placeReviews);
+            displayReviews(placeReviews);
         } else if (response.status === 404) {
             console.log('ℹ️  No reviews found for this place');
             displayReviews([]);
