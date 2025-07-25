@@ -35,5 +35,4 @@ build/
 .idea/
 *.swp
 
-# Base de données
-*.db
+
