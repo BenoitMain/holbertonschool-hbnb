@@ -365,6 +365,31 @@ function displayPlaceDetails(place) {
 
     const price = place.price_per_night || place.price || place.cost_per_night || 0;
 
+    // AJOUT : Debug pour voir la structure des amenities
+    console.log('🔍 DEBUG - Place amenities:', place.amenities);
+
+    // Gestion intelligente des amenities
+    let amenitiesHTML = '<li>No amenities listed</li>';
+
+    if (place.amenities && place.amenities.length > 0) {
+        amenitiesHTML = place.amenities.map(amenity => {
+            // Si c'est un objet, extraire le nom ou la propriété appropriée
+            if (typeof amenity === 'object' && amenity !== null) {
+                // Essayer différentes propriétés possibles
+                const amenityText = amenity.name || amenity.title || amenity.amenity_name || amenity.description || JSON.stringify(amenity);
+                return `<li>${amenityText}</li>`;
+            }
+            // Si c'est une string, l'utiliser directement
+            else if (typeof amenity === 'string') {
+                return `<li>${amenity}</li>`;
+            }
+            // Fallback
+            else {
+                return `<li>${String(amenity)}</li>`;
+            }
+        }).join('');
+    }
+
     placeDetails.innerHTML = `
         <div class="place-info">
             <h1>${place.title || place.name || 'Unnamed Place'}</h1>
@@ -378,10 +403,7 @@ function displayPlaceDetails(place) {
             <div class="amenities">
                 <h3>Amenities:</h3>
                 <ul>
-                    ${place.amenities && place.amenities.length > 0
-            ? place.amenities.map(amenity => `<li>${amenity}</li>`).join('')
-            : '<li>No amenities listed</li>'
-        }
+                    ${amenitiesHTML}
                 </ul>
             </div>
         </div>
