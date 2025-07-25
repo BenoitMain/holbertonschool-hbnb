@@ -72,7 +72,9 @@ class ReviewList(Resource):
                 'text': new_review.text,
                 'rating': new_review.rating,
                 'user_id': new_review.user.id,
-                # retrouvé la valeur de l'id qui met la review
+                'user_name': f"{new_review.user.first_name} {new_review.user.last_name}",
+                'first_name': new_review.user.first_name,
+                'last_name': new_review.user.last_name,
                 'place_id': new_review.place.id,
                 'created_at': new_review.created_at.isoformat(),
                 'updated_at': new_review.updated_at.isoformat()
@@ -95,6 +97,9 @@ class ReviewList(Resource):
                     'text': review.text,
                     'rating': review.rating,
                     'user_id': review.user_id,
+                    'user_name': f"{review.user.first_name} {review.user.last_name}",
+                    'first_name': review.user.first_name,
+                    'last_name': review.user.last_name,
                     'place_id': review.place_id,
                     'created_at': review.created_at.isoformat(),
                     'updated_at': review.updated_at.isoformat()
@@ -128,6 +133,9 @@ class ReviewResource(Resource):
                 'text': review.text,
                 'rating': review.rating,
                 'user_id': review.user_id,
+                'user_name': f"{review.user.first_name} {review.user.last_name}",
+                'first_name': review.user.first_name,
+                'last_name': review.user.last_name,
                 'place_id': review.place_id,
                 'created_at': review.created_at.isoformat(),
                 'updated_at': review.updated_at.isoformat()
@@ -171,6 +179,9 @@ class ReviewResource(Resource):
                 'text': updated_review.text,
                 'rating': updated_review.rating,
                 'user_id': updated_review.user_id,
+                'user_name': f"{updated_review.user.first_name} {updated_review.user.last_name}",
+                'first_name': updated_review.user.first_name,
+                'last_name': updated_review.user.last_name,
                 'place_id': updated_review.place_id,
                 'created_at': updated_review.created_at.isoformat(),
                 'updated_at': updated_review.updated_at.isoformat()
@@ -235,6 +246,9 @@ class PlaceReviewList(Resource):
                     'text': review.text,
                     'rating': review.rating,
                     'user_id': review.user_id,
+                    'user_name': f"{review.user.first_name} {review.user.last_name}",
+                    'first_name': review.user.first_name,
+                    'last_name': review.user.last_name,
                     'place_id': review.place_id,
                     'created_at': review.created_at.isoformat(),
                     'updated_at': review.updated_at.isoformat()
