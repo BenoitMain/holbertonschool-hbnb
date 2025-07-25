@@ -1,137 +1,281 @@
 /*
-  This is a SAMPLE File to get you started. Follow the instructions on the project to complete the tasks.
-  You'll probably need to override some of theese styles.
+==============================================
+  HBnB Application - Styles CSS
+  Fichier de styles pour l'application HBnB Part 4
+==============================================
 */
 
+/*
+====================
+  RESET ET BASE
+====================
+*/
+
+/* Reset global pour une base cohérente sur tous les navigateurs */
 * {
     box-sizing: border-box;
+    /* Inclut padding et border dans la largeur */
     margin: 0;
+    /* Supprime les marges par défaut */
     padding: 0;
+    /* Supprime les paddings par défaut */
     font-family: 'Open Sans', sans-serif;
+    /* Police principale */
 }
 
+/* Style de base du body */
 body {
-    background-color: #b209c9;
-    color: #f1db0f;
+    background-color: rgb(219, 116, 116) !important;
+    color: white !important;
+    font-size: 20px !important;
 }
 
+/*
+====================
+  HEADER ET NAVIGATION
+====================
+*/
+
+/* Barre de navigation principale */
 header {
-    background-color: #853e05;
+    background-color: #2c2a2a;
+    /* Couleur de fond marron */
     color: #fff;
+    /* Texte blanc */
     padding: 1rem;
+    /* Espacement interne */
 }
 
+/* Liens de navigation */
 nav a {
     color: #fff;
+    /* Couleur blanche pour les liens */
     text-decoration: none;
+    /* Supprime le soulignement */
     margin-left: 1rem;
+    /* Espacement entre les liens */
 }
 
+/*
+====================
+  LAYOUT PRINCIPAL
+====================
+*/
+
+/* Container principal du contenu */
 main {
     padding: 2rem;
+    /* Espacement interne généreux */
 }
 
+/*
+====================
+  CARDS ET CONTENEURS
+====================
+*/
+
+/* Style de base pour les cartes de places et reviews */
 .place-card,
 .review-card {
     margin: 20px;
+    /* Marge externe autour des cartes */
     padding: 10px;
+    /* Espacement interne des cartes */
     border: 1px solid #ddd;
+    /* Bordure grise claire */
     border-radius: 10px;
+    /* Coins arrondis */
 }
 
+/*
+====================
+  BOUTONS
+====================
+*/
+
+/* Bouton "View Details" des places */
 .details-button {
     background-color: #a3c9a8;
+    /* Couleur de fond verte claire */
     color: #fff;
+    /* Texte blanc */
     padding: 10px 20px;
+    /* Espacement interne vertical et horizontal */
     border-radius: 5px;
+    /* Coins légèrement arrondis */
     text-decoration: none;
+    /* Supprime le soulignement */
     display: inline-block;
+    /* Permet d'appliquer margin-top */
     margin-top: 10px;
+    /* Espacement au-dessus du bouton */
     transition: background-color 0.3s ease;
+    /* Animation fluide au hover */
 }
 
+/* Effet hover sur le bouton "View Details" */
 .details-button:hover {
     background-color: #6fbf73;
+    /* Couleur plus foncée au survol */
 }
 
+/* Bouton logout spécifique */
+.login-button.logout {
+    background-color: #ac5e65;
+    /* Couleur rouge pour le logout */
+    cursor: pointer;
+    /* Curseur pointeur */
+}
 
+/* Effet hover sur le bouton logout */
+.login-button.logout:hover {
+    background-color: #d36671;
+    /* Rouge plus foncé au survol */
+}
+
+/*
+====================
+  DÉTAILS DES PLACES
+====================
+*/
+
+/* Container pour les détails d'une place (vide pour l'instant) */
 .place-details {}
 
+/* Titre principal sur la page de détails */
 .place-info h1 {
     font-size: 2rem;
+    /* Taille de police grande */
     margin: 1rem 0;
+    /* Marge verticale */
 }
 
+/*
+====================
+  TYPOGRAPHIE
+====================
+*/
+
+/* Titres avec police serif pour un style élégant */
 h1,
 h2,
 h3 {
     font-family: 'Lora', serif;
 }
 
-/* Style pour le bouton logout */
-.login-button.logout {
-    background-color: #dc3545;
-    cursor: pointer;
+/* TEST SIMPLE */
+h1 {
+    color: rgb(12, 12, 12) !important;
+    text-align: center !important;
 }
 
-.login-button.logout:hover {
-    background-color: #c82333;
-}
+/*
+====================
+  SECTION REVIEWS
+====================
+*/
 
+/* Container principal des reviews */
 .reviews-section {
     margin-top: 30px;
+    /* Espacement au-dessus de la section */
     padding: 20px;
+    /* Espacement interne */
     background-color: #f8f9fa;
+    /* Couleur de fond gris très clair */
     border-radius: 8px;
+    /* Coins arrondis */
 }
 
+/* Style individuel de chaque review */
 .review-card {
     background-color: white;
+    /* Fond blanc pour chaque review */
     border: 1px solid #dee2e6;
+    /* Bordure grise claire */
     border-radius: 8px;
+    /* Coins arrondis */
     padding: 15px;
+    /* Espacement interne */
     margin-bottom: 15px;
+    /* Espacement entre les reviews */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Ombre légère */
 }
 
+/* Header de chaque review (nom + rating) */
 .review-header {
     display: flex;
+    /* Layout flexbox */
     justify-content: space-between;
+    /* Espacement entre nom et rating */
     align-items: center;
+    /* Alignement vertical centré */
     margin-bottom: 10px;
+    /* Espacement en bas */
     border-bottom: 1px solid #e9ecef;
+    /* Ligne de séparation */
     padding-bottom: 8px;
+    /* Espacement avant la ligne */
 }
 
+/* Nom du reviewer en gras */
 .review-header strong {
     color: #495057;
+    /* Couleur gris foncé */
     font-size: 1.1em;
+    /* Taille légèrement plus grande */
 }
 
+/* Étoiles de rating */
 .rating {
     font-size: 1.2em;
+    /* Taille plus grande pour les étoiles */
 }
 
+/* Texte principal de la review */
 .review-text {
     margin: 10px 0;
+    /* Marge verticale */
     line-height: 1.5;
+    /* Hauteur de ligne pour la lisibilité */
     color: #212529;
+    /* Couleur gris très foncé */
 }
 
+/* Date de la review */
 .review-date {
     color: #6c757d;
+    /* Couleur grise moyenne */
     font-style: italic;
+    /* Style italique */
 }
 
+/*
+====================
+  FORMULAIRE D'AJOUT DE REVIEW
+====================
+*/
+
+/* Container du formulaire d'ajout de review */
 #add-review {
     margin-top: 30px;
+    /* Espacement au-dessus */
     padding: 20px;
-    background-color: #e8f5e8;
+    /* Espacement interne */
+    background-color: #d36671;
+    /* Couleur de fond verte très claire */
     border-radius: 8px;
+    /* Coins arrondis */
     border: 1px solid #d4edda;
+    /* Bordure verte claire */
 }
 
+/* Titre du formulaire d'ajout */
 #add-review h3 {
-    color: #155724;
+    color: #fcf9f9;
+    /* Couleur verte foncée */
     margin-bottom: 15px;
+    /* Espacement en bas */
 }
+
