@@ -126,6 +126,19 @@ python run.py
 Access the Swagger UI at:
 [http://localhost:5000/api/v1/](http://localhost:5000/api/v1/)
 
+## 🔑 How to Test the Login Functionality
+
+1. **Start the backend application** (see the "Run the application" section above).
+2. **Open the frontend** in your browser (for example, `index.html` or `login.html`).
+3. **Go to the login page** (`login.html`).
+4. **Enter valid credentials** (use an existing user from the database, such as `admin@hbnb.com` / `admin123`, or any user you have created).
+5. **Click "Login"**:
+    * If the credentials are correct, you will be redirected to the homepage and the "Logout" button will appear.
+    * If the credentials are incorrect, an error message will be displayed.
+6. **Check that the `token` cookie is set** in your browser (you can see it in the "Application" > "Cookies" tab of your browser’s developer tools).
+7. **Test logout** by clicking "Logout": the cookie will be deleted and you will be redirected.
+
+
 ## 🔧 Technologies Used
 
 * Python 3.x
